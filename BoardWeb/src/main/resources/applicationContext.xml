@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:component-scan base-package="polymorphism"></context:component-scan>
+	
+	<!-- 
+	<bean id="tv" class="polymorphism.SamsungTV" p:speaker-ref="tmax"></bean>
+	
+	<bean id="apple" class="polymorphism.AppleSpeaker" lazy-init="true"/>
+	<bean id="tmax" class="polymorphism.TmaxSpeaker" lazy-init="true"/>
+	
+	<bean id="col" class="polymorphism.CollectionBean">
+		<property name="addressList">
+			<list>
+				<value>서울</value>	
+				<value>대전</value>	
+				<value>대구</value>
+				<value>부산</value>
+			</list>
+		</property>
+	</bean>
+	 -->
+
+</beans>
