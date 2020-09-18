@@ -13,7 +13,8 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
+	<!-- img, css, jsp -->
+	<resources mapping="/res/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -21,8 +22,29 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.koreait.matzip" />
+	<!-- 어노테이션 스캔 빈등록하는것 -->
+	<context:component-scan base-package="com.koreait.matzip" />	
+
+	<!-- 메소드 통해서 값 넣어줌 -->
+	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<beans:property name="poolName" value="springHikariCP"></beans:property>
+		<beans:property name="connectionTestQuery" value="SELECT 1 FROM DUAL"></beans:property>
+		<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></beans:property>
+		<beans:property name="maximumPoolSize" value="10"></beans:property>
+		<beans:property name="idleTimeout" value="5000"></beans:property>
+		
+		<beans:property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/matzip?characterEncoding=UTF-8"></beans:property>
+		<beans:property name="username" value="root"></beans:property>
+		<beans:property name="password" value="koreait2020"></beans:property>
+	</beans:bean>
 	
+	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<beans:constructor-arg ref="hikariConfig" />
+	</beans:bean>
 	
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<beans:property name="configLocation" value="/WEB-INF/spring/mybatis-alias.xml"></beans:property>
+	</beans:bean>
 	
 </beans:beans>
