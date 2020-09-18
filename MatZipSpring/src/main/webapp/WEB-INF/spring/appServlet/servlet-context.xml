@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -22,7 +24,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<!-- 어노테이션 스캔 빈등록하는것 -->
+	<!-- 어노테이션 스캔 빈등록하는것, 스프링 스캔 -->
 	<context:component-scan base-package="com.koreait.matzip" />	
 
 	<!-- 메소드 통해서 값 넣어줌 -->
@@ -46,5 +48,8 @@
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 		<beans:property name="configLocation" value="/WEB-INF/spring/mybatis-alias.xml"></beans:property>
 	</beans:bean>
+	
+	<!-- 마이바티스 스캔 dao 빈등록 -->
+	<mybatis-spring:scan base-package="com.koreait.matzip" />
 	
 </beans:beans>
