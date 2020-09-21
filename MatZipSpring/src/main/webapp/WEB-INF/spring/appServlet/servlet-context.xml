@@ -10,6 +10,7 @@
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<context:property-placeholder location="classpath:config.properties" />
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -31,13 +32,13 @@
 	<beans:bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<beans:property name="poolName" value="springHikariCP"></beans:property>
 		<beans:property name="connectionTestQuery" value="SELECT 1 FROM DUAL"></beans:property>
-		<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></beans:property>
+		<beans:property name="driverClassName" value="${db.driver}"></beans:property>
 		<beans:property name="maximumPoolSize" value="10"></beans:property>
 		<beans:property name="idleTimeout" value="5000"></beans:property>
 		
-		<beans:property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/matzip?characterEncoding=UTF-8"></beans:property>
-		<beans:property name="username" value="root"></beans:property>
-		<beans:property name="password" value="koreait2020"></beans:property>
+		<beans:property name="jdbcUrl" value="${db.url}"></beans:property>
+		<beans:property name="username" value="${db.username}"></beans:property>
+		<beans:property name="password" value="${db.password}"></beans:property>
 	</beans:bean>
 	
 	<beans:bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

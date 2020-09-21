@@ -5,9 +5,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.koreait.matzip.Const;
@@ -51,6 +54,7 @@ public class UserController {
 	}
 	
 	
+	//jsp
 	@RequestMapping(value="/join", method=RequestMethod.GET)
 	//required=true err=?값 주지 않으면 시도조차 안됨 false
 	public String join(Model model, @RequestParam(required=false, defaultValue="0") int err) {
@@ -63,6 +67,7 @@ public class UserController {
 		return ViewRef.TEMP_DEFAULT;
 	}
 	
+	//redirect
 	@RequestMapping(value="/join", method=RequestMethod.POST) 
 	public String join(UserVO param, RedirectAttributes ra) {
 		int result = service.join(param);
@@ -73,6 +78,14 @@ public class UserController {
 		
 		ra.addAttribute("err", result);	//쿼리스트링으로
 		return "redirect:/user/join?err=" + result;
+	}
+	
+	//응답
+	@RequestMapping(value="/ajaxIdChk", method=RequestMethod.POST)
+	@ResponseBody
+	public String ajaIdChk(@RequestBody UserPARAM param) {
+		int result = service.login(param);
+		return String.valueOf(result);
 	}
 	
 }
