@@ -30,10 +30,10 @@
 				<div class="mL15" id="headerLogout"><a href="/user/logout">로그아웃</a></div>
 			</div>
 			<div id="headerRight">
-				<a href="/restaurant/restMap">
+				<a href="/rest/map">
 					<i class="fas fa-map-marked-alt"></i>
 				</a>
-				<a class="mL20" href="/restaurant/restReg">
+				<a class="mL20" href="/rest/restReg">
 					<i class="fas fa-plus"></i>
 				</a>
 				<a class="mL20" href="/user/restFavorite">
