@@ -13,6 +13,9 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1d159f218bfc0f213d587f849529f85"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+	
+	var markerList = []	//마커리스트
+
 	/* const container = document.getElementById('mapContainer'); //지도를 담을 영역의 DOM 레퍼런스 */
 	const options = { //지도를 생성할 때 필요한 기본 옵션
 		center: new kakao.maps.LatLng(35.958437, 128.486084), //지도의 중심좌표.
@@ -24,6 +27,11 @@
 	console.log(map.getCenter())
 	
 	function getRestaurantList() {
+		//마커지우기
+		markerList.forEach(function(marker) {
+			marker.setMap(null)
+		})
+		
 		const bounds = map.getBounds()
 		const southWest = bounds.getSouthWest()
 		const northEast = bounds.getNorthEast()
@@ -48,7 +56,7 @@
 			})
 		})		
 	}
-	kakao.maps.event.addListener(map, 'dragend', getRestaurantList)
+	kakao.maps.event.addListener(map, 'tilesloaded', getRestaurantList)
 	
 	getRestaurantList()
 	
@@ -93,6 +101,8 @@
 		})
 		
 		marker.setMap(map)
+		
+		markerList.push(marker)
 	}
 	
 	function moveToDetail(i_rest) {

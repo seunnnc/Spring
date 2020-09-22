@@ -16,18 +16,23 @@
 	<div id="container">
 		<header>
 			<div id="headerLeft">
-				<div class="containerPImg mL10" >
-					<c:choose>
-						<c:when test="${loginUser.profile_img != null}">
-							<img class="pImg" src="/res/img/user/${loginUSer.i_user}/${loginUser.profile_img}">
-						</c:when>
-						<c:otherwise>
-							<img class="pImg" src="/res/img/default_profile_img.png">
-						</c:otherwise>
-					</c:choose>
-				</div>
-				<div class="mL10"><span id="user_nm">${loginUser.nm}</span>님 환영합니다 </div>
-				<div class="mL15" id="headerLogout"><a href="/user/logout">로그아웃</a></div>
+				<c:if test="${loginUser != null}">
+					<div class="containerPImg mL10" >
+						<c:choose>
+							<c:when test="${loginUser.profile_img != null}">
+								<img class="pImg" src="/res/img/user/${loginUSer.i_user}/${loginUser.profile_img}">
+							</c:when>
+							<c:otherwise>
+								<img class="pImg" src="/res/img/default_profile_img.png">
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="mL10"><span id="user_nm">${loginUser.nm}</span>님 환영합니다 </div>
+					<div class="mL15" id="headerLogout"><a href="/user/logout">로그아웃</a></div>
+				</c:if>
+				<c:if test="${loginUser == null}">
+					<div class="ml15" id="headerLogout"><a href="/user/login">로그인</a></div>
+				</c:if>
 			</div>
 			<div id="headerRight">
 				<a href="/rest/map">
