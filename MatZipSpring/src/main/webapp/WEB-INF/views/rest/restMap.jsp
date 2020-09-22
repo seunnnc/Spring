@@ -68,6 +68,7 @@
 		centerSpan.className = 'center'
 		centerSpan.innerText = item.nm
 		
+		
 		content.appendChild(leftSpan)
 		content.appendChild(centerSpan)
 		content.appendChild(rightSpan)

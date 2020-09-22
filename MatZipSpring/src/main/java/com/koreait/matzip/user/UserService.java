@@ -28,7 +28,7 @@ public class UserService {
 		if(!cryptPw.equals(dbUser.getUser_pw())) {
 			return Const.NO_PW;
 		}
-		
+		param.setI_user(dbUser.getI_user());	//세션 로그인 i_user
 		param.setUser_pw(null);	//비밀번호null로 변경
 		param.setNm(dbUser.getNm());
 		param.setProfile_img(dbUser.getProfile_img());
