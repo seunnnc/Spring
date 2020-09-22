@@ -50,11 +50,17 @@ public class RestController {
 		return "redirect:/rest/map";
 	}
 	
-	@RequestMapping("/detail")
-	public String detail() {
+	@RequestMapping(value="/detail")
+	public String detail(Model model, RestPARAM param) {
+		RestDMI data = service.selRest(param);
+		
+		model.addAttribute("data", data);
+		
+		model.addAttribute(Const.TITLE, data.getNm());
+		model.addAttribute(Const.VIEW, "rest/restDetail");
 		return ViewRef.TEMP_MENUTEMP;
 	}
-	
+
 	@RequestMapping(value="/ajaxGetList", produces={"application/json; charset=utf-8"})
 	@ResponseBody public List<RestDMI> ajaxGetList(RestPARAM param) {
 		System.out.println("sw_lat : " + param.getSw_lat());

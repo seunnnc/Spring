@@ -96,7 +96,6 @@
 		*/
 		addEvent(content, 'click', function() {
 			console.log('마커클릭 : ' + item.i_rest)
-			
 			moveToDetail(item.i_rest)
 		})
 		
@@ -106,14 +105,14 @@
 	}
 	
 	function moveToDetail(i_rest) {
-		location.href = '/rest/restDetail?i_rest=' + i_rest
+		location.href = '/rest/detail?i_rest=' + i_rest
 	}
 	
 	function addEvent(target, type, callback) {
 		if(target.addEventListener) {
 			target.addEventListener(type, callback);
 		} else {
-			target.attackEvent('on' + type, callback)
+			target.attachEvent('on' + type, callback)
 		}
 	}
 	

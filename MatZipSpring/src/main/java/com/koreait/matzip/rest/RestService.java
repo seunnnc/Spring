@@ -24,7 +24,7 @@ public class RestService {
 		return mapper.selRestList(param);
 	}
 	
-	int insRest(RestPARAM param) {
+	public int insRest(RestPARAM param) {
 
 		return mapper.insRest(param);
 	}
@@ -34,6 +34,11 @@ public class RestService {
 		p.setI_m(1);
 		
 		return cMapper.selCategoryList(p);
+	}
+	
+	public RestDMI selRest(RestPARAM param) {
+		
+		return mapper.selRest(param);
 	}
 	
 }

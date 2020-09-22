@@ -35,12 +35,19 @@
 				</c:if>
 			</div>
 			<div id="headerRight">
-				<a href="/rest/map">
+				<a href="/rest/map" id="map">
 					<i class="fas fa-map-marked-alt"></i>
 				</a>
-				<a class="mL20" href="/rest/restReg">
+				<c:if test="${loginUser != null}">
+				<a class="mL20" href="#" onclick="moveToReg()">
 					<i class="fas fa-plus"></i>
 				</a>
+				</c:if>
+				<c:if test="${loginUser == null}">
+					<a class="mL20" href="#" onclick="alert('로그인이 필요합니다')">
+						<i class="fas fa-plus"></i>
+					</a>
+				</c:if>
 				<a class="mL20" href="/user/restFavorite">
 					<i class="fas fa-bookmark"></i>
 				</a>
@@ -53,5 +60,11 @@
 			회사정보
 		</footer>
 	</div>
+	
+	<script>
+		function moveToReg() {
+			location.href='/rest/restReg'
+		}	
+	</script>
 </body>
 </html>

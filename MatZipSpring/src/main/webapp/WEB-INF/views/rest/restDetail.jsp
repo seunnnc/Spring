@@ -72,8 +72,8 @@
 						</span>
 					</div>
 					<div class="status_branch_name">
-						<span class="cnt_hit">${data.cntHits}</span> <span
-							class="cnt_favorite">${data.cntFavorite}</span>
+						<span class="cnt_hit">${data.hits}</span> <span
+							class="cnt_favorite">${data.cnt_favorite}</span>
 					</div>
 				</div>
 				<div>
@@ -87,6 +87,10 @@
 							<tr>
 								<td>카테고리</td>
 								<td>${data.cd_category_nm}</td>
+							</tr>
+							<tr>
+								<td>작성자</td>
+								<td>${data.user_nm}</td>
 							</tr>
 							<tr>
 								<th>메뉴</th>

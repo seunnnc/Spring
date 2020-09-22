@@ -8,8 +8,8 @@ public class RestVO {
 	private double lng;
 	private int cd_category;
 	private int i_user;
-	private String r_dr;
-	private String m_dt;
+	private int hits;
+	
 	public int getI_rest() {
 		return i_rest;
 	}
@@ -46,22 +46,17 @@ public class RestVO {
 	public void setCd_category(int cd_category) {
 		this.cd_category = cd_category;
 	}
-	public String getR_dr() {
-		return r_dr;
-	}
-	public void setR_dr(String r_dr) {
-		this.r_dr = r_dr;
-	}
-	public String getM_dt() {
-		return m_dt;
-	}
-	public void setM_dt(String m_dt) {
-		this.m_dt = m_dt;
-	}
 	public int getI_user() {
 		return i_user;
 	}
 	public void setI_user(int i_user) {
 		this.i_user = i_user;
 	}
+	public int getHits() {
+		return hits;
+	}
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+	
 }
