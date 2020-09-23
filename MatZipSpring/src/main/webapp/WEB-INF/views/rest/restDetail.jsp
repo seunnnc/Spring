@@ -8,7 +8,8 @@
 	href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
 	integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
 	crossorigin="anonymous">
-<div style="width: 100%;">
+
+<div style="width: 100%; margin-top: 15px;">
 	<div class="recMenuContainer">
 		<c:forEach items="${recommendMenuList}" var="item">
 			<div class="recMenuItem" id="recMenuItem_${item.seq }">
@@ -141,7 +142,7 @@
 	
 		function isDel(){
 			if(confirm('삭제 하시겠습니까?')) {
-				location.href='/restaurant/restDetail?i_rest=${data.i_rest}'
+				location.href='/rest/del?i_rest=${data.i_rest}'
 			}
 		}
 		

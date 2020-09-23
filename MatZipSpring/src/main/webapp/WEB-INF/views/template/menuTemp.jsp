@@ -63,7 +63,7 @@
 	
 	<script>
 		function moveToReg() {
-			location.href='/rest/restReg'
+			location.href='/rest/reg'
 		}	
 	</script>
 </body>

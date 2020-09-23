@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.koreait.matzip.model.CodeVO;
@@ -39,6 +40,21 @@ public class RestService {
 	public RestDMI selRest(RestPARAM param) {
 		
 		return mapper.selRest(param);
+	}
+	
+	@Transactional
+	public void delRestTran(RestPARAM param) {
+		mapper.delRestRecMenu(param);
+		mapper.delRestMenu(param);
+		mapper.delRest(param);
+	}
+	
+	public int delRestRecMenu(RestPARAM param) {
+		return mapper.delRestRecMenu(param);
+	}
+	
+	public int delRestMenu(RestPARAM param) {
+		return mapper.delRestMenu(param);
 	}
 	
 }
