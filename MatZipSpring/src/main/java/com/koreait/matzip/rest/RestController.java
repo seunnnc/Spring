@@ -10,12 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.koreait.matzip.Const;
 import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestPARAM;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
+import com.oreilly.servlet.MultipartRequest;
 
 @Controller
 @RequestMapping("/rest")	//1차 주소값
@@ -56,6 +61,8 @@ public class RestController {
 		
 		model.addAttribute("data", data);
 		
+		model.addAttribute("css", new String[] {"restDetail"});
+		model.addAttribute("recMenuList", service.selRestRecMenu(param));
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		return ViewRef.TEMP_MENUTEMP;
@@ -85,5 +92,24 @@ public class RestController {
 		}
 		System.out.println("result : " + result);
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/recMenus", method = RequestMethod.POST)
+	public String recMenus(MultipartHttpServletRequest mReq,RedirectAttributes rs) {
+		
+		int i_rest = service.insRecMenus(mReq);
+		System.out.println("i_rest : " + i_rest);
+		
+		rs.addAttribute("i_rest", i_rest);
+		return "redirect:/rest/detail";
+	}
+	
+	@RequestMapping("/ajaxDelRecMenu")
+	@ResponseBody public int ajaxDelRecMenu(RestPARAM param, HttpSession hs) {
+		
+		String path = "/resources/img/rest" + param.getI_rest() + "/rec_menu/";
+		String realPath = hs.getServletContext().getRealPath(path);
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));	//로그인유저pk 담기
+		return service.delRecMenu(param, realPath);
 	}
 }

@@ -6,6 +6,7 @@ public class RestPARAM extends RestVO{
 	private double ne_lat;
 	private double ne_lng;
 	private int i_m;
+	private int seq;
 	
 	public double getSw_lat() {
 		return sw_lat;
@@ -36,6 +37,12 @@ public class RestPARAM extends RestVO{
 	}
 	public void setI_m(int i_m) {
 		this.i_m = i_m;
+	}
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 	
 

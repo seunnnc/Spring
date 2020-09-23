@@ -9,6 +9,14 @@
 		(#{nm}, #{addr}, #{lat}, #{lng}, #{cd_category}, #{i_user})
 	</insert>
 	
+	<insert id="insRestRecmenu" parameterType="RestRecMenuVO">
+		INSERT INTO t_restaurant_recommend_menu
+		(i_rest, seq, menu_nm, menu_price, menu_pic)
+		SELECT #{i_rest}, ifnull(max(seq), 0) + 1, #{menu_nm}, #{menu_price}, #{menu_pic}
+		FROM t_restaurant_recommend_menu
+		WHERE i_rest = #{i_rest}
+	</insert>
+	
 	<select id="selRestList" parameterType="RestPARAM" resultType="RestDMI">
 		SELECT i_rest, nm, lat, lng
 		FROM t_restaurant
@@ -37,12 +45,29 @@
 		WHERE A.i_rest = #{i_rest} 
 	</select>
 	
+	<select id="selRestRecMenu" parameterType="RestPARAM" resultType="RestRecMenuVO">
+		SELECT A.i_rest, A.seq, A.menu_nm, A.menu_price, A.menu_pic
+		FROM t_restaurant_recommend_menu A
+		<if test="i_user > 0">
+			INNER JOIN t_restaurant B
+			ON A.i_rest = B.i_rest
+			AND B.i_user = #{i_user}
+		</if>
+		WHERE A.i_rest = #{i_rest}
+		<if test="seq > 0">
+			AND A.seq = #{seq}
+		</if>
+	</select>
+	
 	<delete id="delRestRecMenu" parameterType="RestPARAM">
 		DELETE A FROM t_restaurant_recommend_menu A
 		INNER JOIN t_restaurant B
 		ON A.i_rest = B.i_rest
 		WHERE B.i_rest = #{i_rest}
 		AND B.i_user = #{i_user}
+		<if test="seq > 0">
+			AND A.seq = #{seq}
+		</if> 
 	</delete>
 	
 	<delete id="delRestMenu" parameterType="RestPARAM">
@@ -51,6 +76,9 @@
 		ON A.i_rest = B.i_rest
 		WHERE B.i_rest = #{i_rest}
 		AND B.i_user = #{i_user}
+		<if test="seq > 0">
+			AND A.seq = #{seq}
+		</if> 
 	</delete>
 	
 	<delete id="delRest" parameterType="RestPARAM">

@@ -36,7 +36,7 @@ public class LoginCkeckInterceptor extends HandlerInterceptorAdapter{
 		
 		case ViewRef.URI_REST:
 			switch(uriArr[2]) {
-			case "restReg":
+			case "reg":
 				if(isLogout) {
 					response.sendRedirect("/user/login");
 					return false;
