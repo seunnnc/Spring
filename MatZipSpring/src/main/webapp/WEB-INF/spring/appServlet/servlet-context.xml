@@ -68,6 +68,13 @@
 		</interceptor>
 	</interceptors>
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/rest/*" />
+			<beans:bean class="com.koreait.matzip.RestInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
+	
 	<!-- file Upload -->
 	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

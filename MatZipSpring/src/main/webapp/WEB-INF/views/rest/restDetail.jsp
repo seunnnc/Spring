@@ -8,7 +8,6 @@
 	href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
 	integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
 	crossorigin="anonymous">
-
 <div style="width: 100%; margin-top: 15px;">
 	<div class="recMenuContainer">
 		<c:forEach items="${recMenuList}" var="item">
@@ -36,7 +35,7 @@
 		<div>
 			<c:if test="${loginUser.i_user == data.i_user}">
 				<button onclick="isDel()">맛집 삭제</button>
-				<h2>- 추천 메뉴 -</h2>
+				<h2><i class="fas fa-utensils"></i> 추천 메뉴</h2>
 				<div>
 					<form id="recFrm" action="/rest/recMenus" enctype="multipart/form-data" method="post">
 						<div>
@@ -50,9 +49,9 @@
 					</form>
 				</div>
 
-				<h2>- 메뉴 -</h2>
+				<h2><i class="fas fa-utensils"></i> 메뉴</h2>
 				<div>
-					<form id="menuFrm" action="/rest/addMenusProc"
+					<form id="menuFrm" action="/rest/menus"
 						enctype="multipart/form-data" method="post">
 						<input type="hidden" name="i_rest" value="${data.i_rest}">
 						<input type="file" name="menu_pic" multiple>
@@ -77,7 +76,7 @@
 				</div>
 				<div>
 					<table>
-						<caption>레스토랑 상세정보</caption>
+						<caption class="sr-only">레스토랑 상세정보</caption>
 						<tbody>
 							<tr>
 								<td>주소</td>
@@ -98,7 +97,12 @@
 										<c:if test="${fn:length(menuList) > 0}">
 											<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
 												<div class="menuItem">
-													<img src="/res/img/restaurant/${data.i_rest}/menu/${menuList[i].menu_pic}">
+													<c:if test="${loginUser.i_user == data.i_user}">
+														<div class="delIconContainer" onclick="delMenu(${menuList[i].seq})">
+															<span><i class="fas fa-times"></i></span>
+														</div>
+													</c:if>
+													<img src="/res/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
 												</div>
 											</c:forEach>
 										</c:if>
@@ -121,19 +125,17 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
-		function delRecMenu(i_rest, seq) {
-			console.log('i_rest : ' + i_rest)
-			console.log('seq : ' + seq)
+		function delRecMenu(seq) {
 			
 			axios.get('/rest/ajaxDelRecMenu', {
 				params: {
-					i_rest,
-					seq,
+					i_rest: ${data.i_rest},
+					seq
 				}
 			}).then(function(res) {
-				if(res.data.result == 1) {
+				if(res.data == 1) {
 					var ele = document.querySelector('#recMenuItem_' + seq)
-					ele.remote()
+					ele.remove()
 				}
 				location.reload()
 			})
@@ -149,26 +151,38 @@
 
 		function addRecMenu() {
 			var div = document.createElement('div')
+			div.setAttribute('id', 'recMenu_' + idx++)
 			
 			var inputNm = document.createElement('input')
 			inputNm.setAttribute("type", "text");
 			inputNm.setAttribute('name', 'menu_nm')
-			var inpuPrice = document.createElement('input')
-			inpuPrice.setAttribute("type", "number");
-			inpuPrice.setAttribute('name', 'menu_price')
+			var inputPrice = document.createElement('input')
+			inputPrice.setAttribute("type", "number")
+			inputPrice.setAttribute('name', 'menu_price')
+			inputPrice.vlaue = '0'
 			var inputPic = document.createElement('input')
 			inputPic.setAttribute("type", "file");
 			inputPic.setAttribute('name', 'menu_pic')
 			
+			var delBtn = document.createElement('input')
+			delBtn.setAttribute('type', 'button')
+			delBtn.setAttribute('value', 'X')
+			delBtn.addEventListener('click', function(idx) {
+				div.remove()
+			})
+			
+			
 			div.append('메뉴 : ')
 			div.append(inputNm)
 			div.append(' 가격 : ')
-			div.append(inpuPrice)
+			div.append(inputPrice)
 			div.append(' 사진 : ')
 			div.append(inputPic)
+			div.append(delBtn)
 			
 			recItem.append(div)
 		}
+		
 		
 	</script>
 </div>

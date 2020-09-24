@@ -13,17 +13,17 @@ public class LoginCkeckInterceptor extends HandlerInterceptorAdapter{
 		System.out.println("uri : " + uri);
 		String[] uriArr = uri.split("/");
 		
-		if(uriArr[1].equals("res")) {	//리소스 (css, img, js)
+		System.out.println("uriArr.length : " + uriArr.length);
+		
+		if(uri.equals("/")) {
 			return true;
-		} else if(uriArr.length < 3) {	//주소 이상함
-			return false;
+		} else if(uriArr[1].equals("res")) {	//리소스 (css, img, js)
+			return true;
 		}
 		
 		System.out.println("인터셉터!");
 		boolean isLogout = SecurityUtils.isLogout(request);
-		
-		System.out.println("uriArr.length : " + uriArr.length);
-		
+
 		switch(uriArr[1]) {
 		case ViewRef.URI_USER:
 			switch(uriArr[2]) {
