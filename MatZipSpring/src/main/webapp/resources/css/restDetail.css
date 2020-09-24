@@ -57,6 +57,10 @@
 	color: #fdfdfd;
 }
 
+.recMenuContainer > .recMenuItem > .info > .delIconContainer > span > i:hover {
+	color: #f9a946;
+}
+
 #sectionContainerCenter > div > button {
 	background: #f9a946;
 	border: none;
@@ -109,6 +113,17 @@
 
 .menuList .menuItem:not(:first-child) {
 	margin-left: 4px;
+}
+
+.menuList > .menuItem > .delIconContainer {
+	cursor: pointer;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+
+.menuList > .menuItem > .delIconContainer:hover {
+	color: #f9a946;
 }
 
 .menuList .menuItem img {
