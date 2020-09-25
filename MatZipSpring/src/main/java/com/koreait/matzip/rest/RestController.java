@@ -21,6 +21,7 @@ import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestFile;
 import com.koreait.matzip.rest.model.RestPARAM;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 
 @Controller
 @RequestMapping("/rest")	//1차 주소값
@@ -59,18 +60,25 @@ public class RestController {
 	public String detail(Model model, RestPARAM param) {
 		RestDMI data = service.selRest(param);
 		
-		model.addAttribute("menuList", service.selRestMenus(param));
-		model.addAttribute("recMenuList", service.selRestRecMenu(param));
+		//model.addAttribute("menuList", service.selRestMenus(param));
+		model.addAttribute("recMenuList", service.selRestRecMenus(param));
 		model.addAttribute("data", data);
 		
-		model.addAttribute("css", new String[] {"restDetail"});
+		model.addAttribute("css", new String[] {"restDetail", "swiper-bundle.min"});
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		return ViewRef.TEMP_MENUTEMP;
 	}
+	
+	@RequestMapping("/ajaxSelMenuList")
+	@ResponseBody
+	public List<RestRecMenuVO> ajaxSelMenuList(RestPARAM param) {
+		return service.selRestMenus(param);
+	}
 
 	@RequestMapping(value="/ajaxGetList", produces={"application/json; charset=utf-8"})
-	@ResponseBody public List<RestDMI> ajaxGetList(RestPARAM param) {
+	@ResponseBody 
+	public List<RestDMI> ajaxGetList(RestPARAM param) {
 		System.out.println("sw_lat : " + param.getSw_lat());
 		System.out.println("sw_lng : " + param.getSw_lng());
 		System.out.println("ne_lat : " + param.getNe_lat());
@@ -106,13 +114,20 @@ public class RestController {
 	}
 	
 	@RequestMapping("/ajaxDelRecMenu")
-	@ResponseBody public int ajaxDelRecMenu(RestPARAM param, HttpSession hs) {
-		
+	@ResponseBody public int ajaxDelRecMenu(RestPARAM param, HttpSession hs) {		
+		System.out.println("넘어왔나요????");
 		String path = "/resources/img/rest/" + param.getI_rest() + "/rec_menu/";
 		String realPath = hs.getServletContext().getRealPath(path);
-		param.setI_user(SecurityUtils.getLoginUserPK(hs));	//로그인유저pk 담기
-		return service.delRecMenu(param, realPath);
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));//로긴 유저pk담기
+		return service.delRestRecMenu(param, realPath);
+	}	
+	
+	@RequestMapping("/ajaxDelMenu")
+	@ResponseBody public int ajaxDelMenu(RestPARAM param) {	 //i_rest, seq, menu_pic
+		System.out.println("ajaxDelMenu 넘어옴??");
+		return service.delRestMenu(param);
 	}
+	
 	
 	@RequestMapping("/menus")
 	public String menus(RestFile param, RedirectAttributes ra, HttpSession hs) {
@@ -123,4 +138,6 @@ public class RestController {
 		ra.addAttribute("i_rest", param.getI_rest());
 		return "redirect:/rest/detail";
 	}
+	
+	
 }

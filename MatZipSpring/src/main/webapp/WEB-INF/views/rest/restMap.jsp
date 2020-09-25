@@ -8,7 +8,8 @@
 	.label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
 </style>
 <div id="sectionContainerCenter">
-<div id="mapContainer" style="width:100%; height:100%;"></div>
+	<div id="mapContainer" style="width:100%; height:100%;"></div>
+</div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1d159f218bfc0f213d587f849529f85"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -135,4 +136,3 @@
 	}
 	
 </script>
-</div>

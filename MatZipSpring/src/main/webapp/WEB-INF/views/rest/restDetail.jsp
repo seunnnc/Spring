@@ -93,27 +93,7 @@
 							<tr>
 								<th>메뉴</th>
 								<td>	
-									<div class="menuList">
-										<c:if test="${fn:length(menuList) > 0}">
-											<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
-												<div class="menuItem">
-													<img src="/res/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
-													<c:if test="${loginUser.i_user == data.i_user}">
-														<div class="delIconContainer" onclick="delMenu(${menuList[i].seq})">
-															<span><i class="fas fa-times"></i></span>
-														</div>
-													</c:if>
-												</div>
-											</c:forEach>
-										</c:if>
-										<c:if test="${fn:length(menuList) > 3}">
-											<div class="menuItem bg_black">
-												<div class="moreCnt">
-													+${fn:length(menuList) - 3}
-												</div>
-											</div>
-										</c:if>
-									</div>
+									<div id="conMenuList" class="menuList"></div>
 								</td>
 							</tr>
 						</tbody>
@@ -122,11 +102,132 @@
 			</div>
 		</div>
 	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script>
-		function delRecMenu(seq) {
+	<div id="carouselContainer" class="padeShow">
+		<div id="imgContainer">
+			<div class="swiper-container">
+			    <!-- Additional required wrapper -->
+			    <div class="swiper-wrapper">
+			        <!-- Slides -->
+			        <div class="swiper-slide">Slide 1</div>
+			        <div class="swiper-slide">Slide 2</div>
+			        <div class="swiper-slide">Slide 3</div>
+			        ...
+			    </div>
+			    <!-- If we need pagination -->
+			    <div class="swiper-pagination"></div>
 			
+			    <!-- If we need navigation buttons -->
+			    <div class="swiper-button-prev"></div>
+			    <div class="swiper-button-next"></div>
+			</div>
+		</div>
+		<span><i class="fas fa-times" onclick="closeCarousel()"></i></span>
+	</div>
+	
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+	<script>
+	
+		function closeCarousel() {
+			carouselContainer.style.opacity = 0
+			carouselContainer.style.zIndex = -10
+		}
+	
+		function openCarousel() {
+			carouselContainer.style.opacity = 1
+			carouselContainer.style.zIndex = 40
+		}
+		
+		var mySwiper
+		
+		function makeCarousel() {
+			mySwiper = new Swiper('.swiper-container', {
+				  // Optional parameters
+				  direction: 'horizontal',
+				  loop: true,
+				
+				  // If we need pagination
+				  pagination: {
+				    el: '.swiper-pagination',
+				  },
+				
+				  // Navigation arrows
+				  navigation: {
+				    nextEl: '.swiper-button-next',
+				    prevEl: '.swiper-button-prev',
+				  }
+				})
+		}
+		
+		var menuList = []
+		
+		function ajaxSelMenuList() {
+			axios.get('/rest/ajaxSelMenuList', {
+				params: {
+					i_rest: ${data.i_rest}
+				}
+			}).then(function(res) {
+				menuList = res.data
+				refreshMenu()
+			})
+		}
+		
+		function refreshMenu() {
+			conMenuList.innerHTML = ''
+			menuList.forEach(function(item, idx) {
+				makeMenuItem(item, idx)
+			})
+		}
+		
+		function makeMenuItem(item, idx) {
+			const div = document.createElement('div')
+			div.setAttribute('class', 'menuItem')
+			
+			const img = document.createElement('img')
+			img.setAttribute('src', `/res/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
+			img.style.cursor = 'pointer'
+			img.addEventListener('click', openCarousel)
+			
+			div.append(img)
+			
+			<c:if test="${loginUser.i_user == data.i_user}">
+				const delDiv = document.createElement('div')
+				delDiv.setAttribute('class', 'delIconContainer')
+				delDiv.addEventListener('click', function() {
+					console.log('아작스 딜리트 들어옴')
+					if(idx > -1) {
+						console.log('아작스 딜리트 들어옴')
+						//서버 삭제 요청!
+						axios.get('/rest/ajaxDelMenu', {
+							params: {
+								i_rest: ${data.i_rest},
+								seq: item.seq,
+								menu_pic: item.menu_pic
+							}
+						}).then(function(res) {
+							if(res.data == 1) {
+								menuList.splice(idx, 1)
+								refreshMenu()
+							} else {
+								alert('메뉴를 삭제할 수 없습니다.')
+							}
+						})	
+					}
+				})
+			
+				const span = document.createElement('span')
+				const i = document.createElement('i')
+				i.setAttribute('class', 'fas fa-times')
+				
+				delDiv.append(span)
+				delDiv.append(i)
+				div.append(delDiv)
+			</c:if>
+				
+			conMenuList.append(div)
+		}
+	
+		function delRecMenu(seq) {
 			axios.get('/rest/ajaxDelRecMenu', {
 				params: {
 					i_rest: ${data.i_rest},
@@ -141,12 +242,7 @@
 			})
 		}
 	
-		function isDel(){
-			if(confirm('삭제 하시겠습니까?')) {
-				location.href='/rest/del?i_rest=${data.i_rest}'
-			}
-		}
-		
+		<c:if test="${loginUser.i_user == data.i_user}">
 		var idx = 0;
 
 		function addRecMenu() {
@@ -182,7 +278,17 @@
 			
 			recItem.append(div)
 		}
+
+		function isDel(){
+			if(confirm('삭제 하시겠습니까?')) {
+				location.href='/rest/del?i_rest=${data.i_rest}'
+			}
+		}
+		addRecMenu()
+		</c:if>
 		
+		makeCarousel()
+		ajaxSelMenuList()
 		
 	</script>
 </div>

@@ -44,6 +44,6 @@ public class RestInterceptor extends HandlerInterceptorAdapter {
 	}
 	
 	private boolean _authSuccess(int i_rest, int i_user) {
-		return i_user == mapper.selRestChkUser(i_user);
+		return i_user == mapper.selRestChkUser(i_rest);
 	}
 }

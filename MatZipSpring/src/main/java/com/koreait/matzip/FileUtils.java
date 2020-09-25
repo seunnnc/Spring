@@ -1,6 +1,6 @@
 package com.koreait.matzip;
 
-import java.io.*;
+import java.io.File;
 import java.util.UUID;
 
 import javax.servlet.http.Part;
@@ -37,5 +37,14 @@ public class FileUtils {
 		}
 
 		return saveFileNm;
+	}
+	
+	public static boolean delFile(String path) {
+		File file = new File(path);
+		if(file.exists()) {
+			return file.delete();
+		}
+		return false;
+		
 	}
 }

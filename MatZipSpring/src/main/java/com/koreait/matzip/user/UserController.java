@@ -45,7 +45,7 @@ public class UserController {
 		
 		if(result == Const.SUCCESS) {
 			hs.setAttribute(Const.LOGIN_USER, param);	//주소값 보냄
-			return "redirect:/rest/map";
+			return "redirect:/";
 		} 
 		
 		String msg = null;

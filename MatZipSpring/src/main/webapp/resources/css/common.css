@@ -87,6 +87,18 @@ a {
 	font-size: 1.3em;
 }
 
+#sectionContainerCenter {	
+	z-index: 20;
+	overflow: auto;
+	
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+
 #container > header > #headerRight {
 	align-items: center;
 	display: flex;
@@ -101,8 +113,7 @@ a {
 
 #container > section {
 	flex-grow: 1;
-	display: flex;
-	justify-content: center;
+	overflow: auto;
 }
 
 #container > footer {
@@ -115,12 +126,6 @@ a {
 	padding: 10px;
 }
 
-#sectionContainerCenter {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
 
 .containerPImg {
 	width: 25px;

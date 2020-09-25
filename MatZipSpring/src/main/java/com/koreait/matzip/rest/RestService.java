@@ -58,9 +58,9 @@ public class RestService {
 		return mapper.selRest(param);
 	}
 
-	public List<RestRecMenuVO> selRestRecMenu(RestPARAM param) {
+	public List<RestRecMenuVO> selRestRecMenus(RestPARAM param) {
 		
-		return mapper.selRestRecMenu(param);
+		return mapper.selRestRecMenus(param);
 	}
 	public int insRecMenus(MultipartHttpServletRequest mReq) {
 		int i_user = SecurityUtils.getLoginUserPK(mReq.getSession());
@@ -98,7 +98,7 @@ public class RestService {
 		}
 		
 		for(RestRecMenuVO vo : list) {
-			mapper.insRestRecmenu(vo);
+			mapper.insRestRecMenu(vo);
 		}
 		
 		return i_rest;
@@ -111,19 +111,24 @@ public class RestService {
 		mapper.delRest(param);
 	}
 	
-	public int delRestRecMenu(RestPARAM param) {
-		return mapper.delRestRecMenu(param);
-	}
-	
 	public int delRestMenu(RestPARAM param) {
+		if(param.getMenu_pic() != null && !"".equals(param.getMenu_pic())) {
+			String path = Const.realPath + "/resources/img/rest/" + param.getI_rest() + "/menu/";
+			
+			if(FileUtils.delFile(path + param.getMenu_pic())) {
+				return mapper.delRestMenu(param);
+			} else {
+				return Const.FAIL;
+			}
+		}
+		
 		return mapper.delRestMenu(param);
 	}
 
-	
-	public int delRecMenu(RestPARAM param, String realPath) {
+	public int delRestRecMenu(RestPARAM param, String realPath) {
 		//파일삭제
 		
-		List<RestRecMenuVO> list = mapper.selRestRecMenu(param);
+		List<RestRecMenuVO> list = mapper.selRestRecMenus(param);
 		if(list.size() == 1) {	//내가 쓴 글이 맞는것 삭제할 정보가 넘어옴
 			RestRecMenuVO item = list.get(0);
 			
