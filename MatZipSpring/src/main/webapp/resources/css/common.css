@@ -87,18 +87,6 @@ a {
 	font-size: 1.3em;
 }
 
-#sectionContainerCenter {	
-	z-index: 20;
-	overflow: auto;
-	
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	
-}
-
 #container > header > #headerRight {
 	align-items: center;
 	display: flex;
@@ -131,6 +119,17 @@ a {
 	width: 25px;
 	height: 25px;
 	display: inline-block;
+}
+
+#sectionContainerCenter {	
+	z-index: 20;
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
 }
 
 .pImg {

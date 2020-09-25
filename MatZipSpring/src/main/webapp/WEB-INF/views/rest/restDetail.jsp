@@ -70,8 +70,8 @@
 						</span>
 					</div>
 					<div class="status_branch_name">
-						<span class="cnt_hit">${data.hits}</span> <span
-							class="cnt_favorite">${data.cnt_favorite}</span>
+						<span class="cnt_hit">${data.hits}</span> 
+						<span class="cnt_favorite"><i class="far fa-thumbs-up"></i>${data.cnt_favorite}</span>
 					</div>
 				</div>
 				<div>
@@ -102,17 +102,12 @@
 			</div>
 		</div>
 	</div>
-	<div id="carouselContainer" class="padeShow">
+	<div id="carouselContainer">
 		<div id="imgContainer">
 			<div class="swiper-container">
 			    <!-- Additional required wrapper -->
-			    <div class="swiper-wrapper">
-			        <!-- Slides -->
-			        <div class="swiper-slide">Slide 1</div>
-			        <div class="swiper-slide">Slide 2</div>
-			        <div class="swiper-slide">Slide 3</div>
-			        ...
-			    </div>
+			    <div id="swiperWrapper" class="swiper-wrapper"></div>
+			    
 			    <!-- If we need pagination -->
 			    <div class="swiper-pagination"></div>
 			
@@ -144,7 +139,7 @@
 			mySwiper = new Swiper('.swiper-container', {
 				  // Optional parameters
 				  direction: 'horizontal',
-				  loop: true,
+				  loop: false,
 				
 				  // If we need pagination
 				  pagination: {
@@ -159,6 +154,8 @@
 				})
 		}
 		
+		makeCarousel()
+		
 		var menuList = []
 		
 		function ajaxSelMenuList() {
@@ -169,11 +166,14 @@
 			}).then(function(res) {
 				menuList = res.data
 				refreshMenu()
+				makeCarousel()
 			})
 		}
 		
 		function refreshMenu() {
 			conMenuList.innerHTML = ''
+			swiperWrapper.innerHTML = ''
+			
 			menuList.forEach(function(item, idx) {
 				makeMenuItem(item, idx)
 			})
@@ -188,15 +188,23 @@
 			img.style.cursor = 'pointer'
 			img.addEventListener('click', openCarousel)
 			
+			const swiperDiv = document.createElement('div')
+			swiperDiv.setAttribute('class', 'swiper-slide')
+			
+			const swiperImg = document.createElement('img')
+			swiperImg.setAttribute('src', `/res/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
+			
+			swiperDiv.append(swiperImg)
+			
+			mySwiper.appendSlide(swiperDiv)
+			
 			div.append(img)
 			
 			<c:if test="${loginUser.i_user == data.i_user}">
 				const delDiv = document.createElement('div')
 				delDiv.setAttribute('class', 'delIconContainer')
 				delDiv.addEventListener('click', function() {
-					console.log('아작스 딜리트 들어옴')
 					if(idx > -1) {
-						console.log('아작스 딜리트 들어옴')
 						//서버 삭제 요청!
 						axios.get('/rest/ajaxDelMenu', {
 							params: {
@@ -287,7 +295,6 @@
 		addRecMenu()
 		</c:if>
 		
-		makeCarousel()
 		ajaxSelMenuList()
 		
 	</script>
