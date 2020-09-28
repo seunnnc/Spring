@@ -17,6 +17,10 @@
 	border: 0; 
 }
 
+.material-icons {
+	cursor: pointer;
+}
+
 .recMenuContainer {
 	z-index: 20;
 	width: 100%;
@@ -116,16 +120,15 @@
 	margin-left: 4px;
 }
 
-.menuList > .menuItem > .delIconContainer {
+.delIconContainer {
 	cursor: pointer;
 	position: absolute;
-	top: 0px;
-	right: 5px;
+	top: 10px;
+	right: 15px;
+	color: #f9a946;
+	font-size: 1.2em;
 }
 
-.menuList > .menuItem > .delIconContainer:hover {
-	color: #f9a946;
-}
 
 .menuList .menuItem img {
 	width: 100%;
@@ -142,6 +145,25 @@
 
 .restaurant-detail {
 	padding: 5px 0 10px 0;
+}
+
+.restaurant-detail > #detail-header > .restaurant_title_wrap > .title > .restaurant_name {
+	display: inline-block;
+	font-size: 1.3em;
+}
+
+.restaurant-detail > #detail-header > .restaurant_title_wrap > .title > span  {
+	color: #f9a946;
+	font-size: medium;
+}
+
+.restaurant-detail > #detail-header > .status_branch_name > i {
+	color: #f9a946;
+	margin-right: 4px;
+}
+
+.restaurant-detail > #detail-header > .status_branch_name > span {
+	color: #0005;
 }
 
 #carouselContainer {
@@ -161,8 +183,8 @@
 
 #carouselContainer #imgContainer {
 	background-color: #fff;
-	width: 60%;
-	height: 70%;
+	width: 40%;
+	height: 80%;
 	position: relative;
 }
 
@@ -172,7 +194,7 @@
 	top: 40px;
 	right: 40px;
 	color: #fff;
-	font-size: 3rem;
+	font-size: 2rem;
 	cursor: pointer;
 }
 

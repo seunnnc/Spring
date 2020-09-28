@@ -2,6 +2,8 @@ package com.koreait.matzip.rest;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +49,10 @@ public class RestController {
 	}
 	
 	@RequestMapping(value="/reg", method=RequestMethod.POST)
-	public String restReg(RestPARAM param, HttpSession hs) {
+	public String restReg(Model model, RestPARAM param, HttpSession hs) {
 		//int i_user = SecurityUtils.getLoginUserPK(request);
 		
+		model.addAttribute("css", new String[] {"restDetail"});
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		int result = service.insRest(param);
 		
@@ -57,7 +60,13 @@ public class RestController {
 	}
 	
 	@RequestMapping(value="/detail")
-	public String detail(Model model, RestPARAM param) {
+	public String detail(Model model, RestPARAM param,  HttpServletRequest req) {
+		
+		service.addHits(param, req);
+		
+		int i_user = SecurityUtils.getLoginUserPK(req);
+		param.setI_user(i_user);
+		
 		RestDMI data = service.selRest(param);
 		
 		//model.addAttribute("menuList", service.selRestMenus(param));
@@ -78,11 +87,14 @@ public class RestController {
 
 	@RequestMapping(value="/ajaxGetList", produces={"application/json; charset=utf-8"})
 	@ResponseBody 
-	public List<RestDMI> ajaxGetList(RestPARAM param) {
+	public List<RestDMI> ajaxGetList(RestPARAM param, HttpSession hs) {
 		System.out.println("sw_lat : " + param.getSw_lat());
 		System.out.println("sw_lng : " + param.getSw_lng());
 		System.out.println("ne_lat : " + param.getNe_lat());
 		System.out.println("ne_lng : " + param.getNe_lng());
+		
+		int i_user = SecurityUtils.getLoginUserPK(hs);
+		param.setI_user(i_user);
 		
 		return service.selRestList(param);
 	}
@@ -127,8 +139,7 @@ public class RestController {
 		System.out.println("ajaxDelMenu 넘어옴??");
 		return service.delRestMenu(param);
 	}
-	
-	
+
 	@RequestMapping("/menus")
 	public String menus(RestFile param, RedirectAttributes ra, HttpSession hs) {
 		

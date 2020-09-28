@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,35 +35,11 @@ public class RestService {
 	@Autowired
 	private CommonMapper cMapper;
 	
-	public List<RestDMI> selRestList(RestPARAM param) {
-		return mapper.selRestList(param);
-	}
-	
-	public List<RestRecMenuVO> selRestMenus(RestPARAM param) {
-		return mapper.selRestMenus(param);
-	}
-	
 	public int insRest(RestPARAM param) {
 
 		return mapper.insRest(param);
 	}
 	
-	List<CodeVO> selCategoryList() {
-		CodeVO p = new CodeVO();
-		p.setI_m(1);
-		
-		return cMapper.selCategoryList(p);
-	}
-	
-	public RestDMI selRest(RestPARAM param) {
-		
-		return mapper.selRest(param);
-	}
-
-	public List<RestRecMenuVO> selRestRecMenus(RestPARAM param) {
-		
-		return mapper.selRestRecMenus(param);
-	}
 	public int insRecMenus(MultipartHttpServletRequest mReq) {
 		int i_user = SecurityUtils.getLoginUserPK(mReq.getSession());
 		int i_rest = Integer.parseInt(mReq.getParameter("i_rest"));
@@ -102,6 +80,46 @@ public class RestService {
 		}
 		
 		return i_rest;
+	}
+	
+	public void addHits(RestPARAM param, HttpServletRequest req) {
+		String myIP = req.getRemoteAddr();
+		ServletContext ctx = req.getServletContext();
+		
+		int i_user = SecurityUtils.getLoginUserPK(req);
+		
+		String currentRestReadIP = (String)ctx.getAttribute(Const.CURRENT_REST_READ_IP + param.getI_rest());
+		if(currentRestReadIP == null || !currentRestReadIP.equals(myIP)) {
+			
+			param.setI_user(i_user);	//내가 쓴 글이면 조회수 안 올라가게 쿼리문으로 막기
+			mapper.updAddHits(param);
+			ctx.setAttribute(Const.CURRENT_REST_READ_IP + param.getI_rest(), myIP);
+		}
+	}
+	
+	public List<RestDMI> selRestList(RestPARAM param) {
+		return mapper.selRestList(param);
+	}
+	
+	public List<RestRecMenuVO> selRestMenus(RestPARAM param) {
+		return mapper.selRestMenus(param);
+	}
+	
+	List<CodeVO> selCategoryList() {
+		CodeVO p = new CodeVO();
+		p.setI_m(1);
+		
+		return cMapper.selCategoryList(p);
+	}
+	
+	public RestDMI selRest(RestPARAM param) {
+		
+		return mapper.selRest(param);
+	}
+
+	public List<RestRecMenuVO> selRestRecMenus(RestPARAM param) {
+		
+		return mapper.selRestRecMenus(param);
 	}
 	
 	@Transactional

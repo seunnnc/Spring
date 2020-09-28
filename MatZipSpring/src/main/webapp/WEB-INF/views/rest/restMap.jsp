@@ -77,6 +77,12 @@
 		centerSpan.className = 'center'
 		centerSpan.innerText = item.nm
 		
+		var restNm = item.nm
+		if(item.is_favorite == 1) {
+			restNm += ' ♥'
+		}
+		
+		centerSpan.innerText = restNm
 		
 		content.appendChild(leftSpan)
 		content.appendChild(centerSpan)
@@ -87,7 +93,7 @@
 		
 		var marker = new kakao.maps.CustomOverlay({
 		    position: mPos,
-		    content: content,
+		    content: content
 		});
 		
 		/*

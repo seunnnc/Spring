@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.koreait.matzip.Const;
+import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.user.model.UserPARAM;
 import com.koreait.matzip.user.model.UserVO;
@@ -87,12 +88,21 @@ public class UserController {
 		return "redirect:/user/join?err=" + result;
 	}
 	
-	//응답
 	@RequestMapping(value="/ajaxIdChk", method=RequestMethod.POST)
 	@ResponseBody
-	public String ajaIdChk(@RequestBody UserPARAM param) {
+	public String ajaxIdChk(@RequestBody UserPARAM param) {
+		System.out.println("user_id : " + param.getUser_id());
 		int result = service.login(param);
 		return String.valueOf(result);
 	}
-	
+
+	@RequestMapping(value="/ajaxToggleFavorite", method=RequestMethod.GET)
+	@ResponseBody
+	public int ajaxToggleFavorite(UserPARAM param, HttpSession hs) {
+		System.out.println("==> ajaxToggleFavorite");
+		int i_user = SecurityUtils.getLoginUserPK(hs);
+		param.setI_user(i_user);
+		return service.ajaxToggleFavorite(param);
+	}
+
 }

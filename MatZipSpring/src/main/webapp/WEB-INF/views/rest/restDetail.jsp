@@ -8,6 +8,7 @@
 	href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
 	integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
 	crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div style="width: 100%; margin-top: 15px;">
 	<div class="recMenuContainer">
 		<c:forEach items="${recMenuList}" var="item">
@@ -67,11 +68,17 @@
 					<div class="restaurant_title_wrap">
 						<span class="title">
 							<h1 class="restaurant_name">${data.nm}</h1>
+							<c:if test="${loginUser != null}">
+							<span id="favorite" class="material-icons" onclick="toggleFavorite()">
+								<c:if test="${data.is_favorite == 1}">favorite</c:if>
+								<c:if test="${data.is_favorite == 0}">favorite_border</c:if>
+							</span>
+						</c:if>
 						</span>
 					</div>
 					<div class="status_branch_name">
-						<span class="cnt_hit">${data.hits}</span> 
-						<span class="cnt_favorite"><i class="far fa-thumbs-up"></i>${data.cnt_favorite}</span>
+						<i class="far fa-eye"></i><span class="cnt_hit">${data.hits}</span> 
+						<i class="far fa-bookmark"></i><span class="cnt_favorite">${data.cnt_favorite}</span>
 					</div>
 				</div>
 				<div>
@@ -122,6 +129,33 @@
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	<script>
+	
+		function toggleFavorite() {
+			console.log("favorite : " + favorite.innerText)
+			
+			let parameter = {
+				params: {
+					i_rest: ${data.i_rest}
+				}
+			}
+			
+			var icon = favorite.innerText.trim()
+			
+			switch(icon) {
+			case 'favorite' :
+				parameter.params.proc_type = 'del'
+				break;
+			case 'favorite_border':
+				parameter.params.proc_type = 'ins'
+				break;
+			}
+			
+			axios.get('/user/ajaxToggleFavorite', parameter).then(function(res) {
+				if(res.data == 1) {
+					favorite.innerText = (icon == 'favorite' ? 'favorite_border' : 'favorite')
+				}
+			})
+		}
 	
 		function closeCarousel() {
 			carouselContainer.style.opacity = 0
@@ -180,30 +214,39 @@
 		}
 		
 		function makeMenuItem(item, idx) {
+			//메인 화면 메뉴이미지 디스플레이
 			const div = document.createElement('div')
 			div.setAttribute('class', 'menuItem')
 			
 			const img = document.createElement('img')
 			img.setAttribute('src', `/res/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
 			img.style.cursor = 'pointer'
-			img.addEventListener('click', openCarousel)
+			img.addEventListener('click', function() {
+				openCarousel(idx + 1)
+			})
 			
+			
+			
+			div.append(img)
+			
+			
+			
+			conMenuList.append(div)
+			//메인 화면에서 메뉴 이미지 디스플레이 ------------------------- [end]
+		
+		
+			//팝업화면에서 메뉴 이미지 디스플레이
 			const swiperDiv = document.createElement('div')
 			swiperDiv.setAttribute('class', 'swiper-slide')
 			
 			const swiperImg = document.createElement('img')
 			swiperImg.setAttribute('src', `/res/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
 			
-			swiperDiv.append(swiperImg)
-			
-			mySwiper.appendSlide(swiperDiv)
-			
-			div.append(img)
-			
 			<c:if test="${loginUser.i_user == data.i_user}">
 				const delDiv = document.createElement('div')
 				delDiv.setAttribute('class', 'delIconContainer')
 				delDiv.addEventListener('click', function() {
+					if(!confirm('삭제하시겠습니까?')) { return }
 					if(idx > -1) {
 						//서버 삭제 요청!
 						axios.get('/rest/ajaxDelMenu', {
@@ -222,18 +265,24 @@
 						})	
 					}
 				})
-			
+				
 				const span = document.createElement('span')
 				const i = document.createElement('i')
-				i.setAttribute('class', 'fas fa-times')
+				i.setAttribute('class', 'fas fa-trash-alt')
 				
 				delDiv.append(span)
 				delDiv.append(i)
-				div.append(delDiv)
+				swiperDiv.append(delDiv)
 			</c:if>
-				
+			
+			swiperDiv.append(swiperImg)
+			
+			mySwiper.appendSlide(swiperDiv)
+		
 			conMenuList.append(div)
 		}
+		
+		
 	
 		function delRecMenu(seq) {
 			axios.get('/rest/ajaxDelRecMenu', {
@@ -268,6 +317,7 @@
 			inputPic.setAttribute("type", "file");
 			inputPic.setAttribute('name', 'menu_pic')
 			
+			
 			var delBtn = document.createElement('input')
 			delBtn.setAttribute('type', 'button')
 			delBtn.setAttribute('value', 'X')
@@ -275,6 +325,16 @@
 				div.remove()
 			})
 			
+			
+			/*
+			var delBtn = document.createElement('input')
+			delBtn.setAttribute('type', 'button')
+			delBtn.addEventListener('click', function(idx) {
+				div.remove()
+			})
+			const i = document.createElement('i')
+			i.setAttribute('class', 'fas fa-times')
+			*/
 			
 			div.append('메뉴 : ')
 			div.append(inputNm)
@@ -292,7 +352,7 @@
 				location.href='/rest/del?i_rest=${data.i_rest}'
 			}
 		}
-		addRecMenu()
+		
 		</c:if>
 		
 		ajaxSelMenuList()
