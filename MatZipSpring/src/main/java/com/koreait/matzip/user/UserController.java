@@ -105,4 +105,19 @@ public class UserController {
 		return service.ajaxToggleFavorite(param);
 	}
 
+	@RequestMapping(value="/favorite", method=RequestMethod.GET)
+	public String favorite(Model model, HttpSession hs) {
+		int i_user = SecurityUtils.getLoginUserPK(hs);
+		UserPARAM param = new UserPARAM();
+		param.setI_user(i_user);
+		
+		model.addAttribute("data", service.selFavoriteList(param));
+	
+		model.addAttribute(Const.CSS, new String[]{"userFavorite"});
+		model.addAttribute(Const.TITLE, "좋아요");
+		model.addAttribute(Const.VIEW, "user/favorite");
+		return ViewRef.TEMP_MENUTEMP;
+	}
+	
+
 }

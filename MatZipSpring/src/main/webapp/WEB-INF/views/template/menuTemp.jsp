@@ -38,6 +38,7 @@
 				<a href="/rest/map" id="map">
 					<i class="fas fa-map-marked-alt"></i>
 				</a>
+				
 				<c:if test="${loginUser != null}">
 				<a class="mL20" href="#" onclick="moveToReg()">
 					<i class="fas fa-plus"></i>
@@ -48,9 +49,17 @@
 						<i class="fas fa-plus"></i>
 					</a>
 				</c:if>
-				<a class="mL20" href="/user/restFavorite">
+				
+				<c:if test="${loginUser != null}">
+				<a class="mL20" href="#" onclick="moveToFavorite()">
 					<i class="fas fa-bookmark"></i>
 				</a>
+				</c:if>
+				<c:if test="${loginUser == null}">
+					<a class="mL20" href="#" onclick="alert('로그인이 필요합니다')">
+						<i class="fas fa-bookmark"></i>
+					</a>
+				</c:if>
 			</div>
 		</header>
 		<section>
@@ -65,6 +74,10 @@
 		function moveToReg() {
 			location.href='/rest/reg'
 		}	
+		
+		function moveToFavorite() {
+			location.href='/user/favorite'
+		}
 	</script>
 </body>
 </html>

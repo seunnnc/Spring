@@ -44,6 +44,7 @@
 
 .recMenuContainer > .recMenuItem > .pic > img {
 	width: 100%;
+	height: 120px;
 }
 
 .recMenuContainer > .recMenuItem > .info {

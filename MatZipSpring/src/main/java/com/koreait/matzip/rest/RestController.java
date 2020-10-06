@@ -52,7 +52,7 @@ public class RestController {
 	public String restReg(Model model, RestPARAM param, HttpSession hs) {
 		//int i_user = SecurityUtils.getLoginUserPK(request);
 		
-		model.addAttribute("css", new String[] {"restDetail"});
+		model.addAttribute(Const.CSS, new String[] {"restDetail"});
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		int result = service.insRest(param);
 		
@@ -73,7 +73,7 @@ public class RestController {
 		model.addAttribute("recMenuList", service.selRestRecMenus(param));
 		model.addAttribute("data", data);
 		
-		model.addAttribute("css", new String[] {"restDetail", "swiper-bundle.min"});
+		model.addAttribute(Const.CSS, new String[] {"restDetail", "swiper-bundle.min"});
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		return ViewRef.TEMP_MENUTEMP;
